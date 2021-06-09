@@ -1,6 +1,5 @@
 /// <reference types = "Cypress"/>
 
-const { should } = require("chai")
 
 const firstName = 'Test'
 const lastName = 'Guest'
