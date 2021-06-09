@@ -1,60 +1,50 @@
 /// <reference types = "Cypress"/>
 
-
-const firstName = 'Test'
-const lastName = 'Guest'
-const workEmail = 'mytestauto1@gmail.com'
-const phoneNumber = 12345612345
-const companyName = "This is just a test message, don't pay attention"
-
-
-
 it('should open the awardco site and verify url', () => {
-        
+
     cy.visit('https://www.award.co/')
 
     cy.url().should('include', 'https://www.award.co/')
-  
-})
 
-it('should open "Talk to sales" form and verify it', ()=> {
-
-    cy.get('.button-navigation').click()
-
-    cy.url().should('include', 'https://www.award.co/demo')
-
-})
-
-//positive test with expected inputs
-it('should fill out the contact form and submit it', () =>{
-    
     //dismiss cookies request
     cy.get('.button > div').click()
 
-    cy.get('#firstname-f64fb9d6-c61a-4f1e-be12-0b51b44aa5d1').type(firstName)
-
-    cy.get('#lastname-f64fb9d6-c61a-4f1e-be12-0b51b44aa5d1').type(lastName)
-
-    cy.get('#email-f64fb9d6-c61a-4f1e-be12-0b51b44aa5d1').type(workEmail)
-
-    cy.get("hs-error-msg").should('not.be.true', 'Email must be formatted correctly.')
-
-    cy.get('#phone-f64fb9d6-c61a-4f1e-be12-0b51b44aa5d1').type(phoneNumber)
-
-    cy.get('#company-f64fb9d6-c61a-4f1e-be12-0b51b44aa5d1').type(companyName)
-
-    cy.get('.hs-button').click()
-
-    
 })
 
-it('should verify that form was submitted', () =>{
 
-    cy.url().should('include','https://go.award.co/thank-you-survey?')
+it('should show the About page and verify purpose existence', ()=> {
 
-    cy.wait(2000)
+   
+   cy.get(':nth-child(4) > [href="/about"]').click()
 
-    cy.get('h1 > span').should('have', "Thank You ")
+   cy.url().should('include', 'https://www.award.co/about')
 
-    cy.get('[style="font-size: 28px; text-align: left;"] > span').should('have', "We'll reach out shortly to coordinate a time to chat.")
+   //dismiss cookies request
+   cy.get('.button > div').click()
+
+   cy.get(':nth-child(6) > .container > .content-centre-wrap > .title').contains("Our PURPOSE")
+
+})
+
+it('should open the contact info and verify adress', ()=> {
+
+   cy.get(':nth-child(4) > [href="/contact"]').click()
+
+   //dismiss cookies request
+   cy.get('.button > div').click()
+
+   cy.expect('CONTACT INFO').to.equal('CONTACT INFO')
+
+    cy.get(':nth-child(3) > h6').contains("382 Park Cir Suite #300, Provo, UT 84604")
+})
+
+it('should show the Recognize solution', ()=>{
+
+    cy.get('#w-dropdown-toggle-0 > .text-block-5').trigger('mouseover')
+
+    cy.contains('Recognize').click({force: true})
+
+    cy.url().should('include','https://www.award.co/recognize')
+
+    cy.get('.h1-white').should('contain', 'Reimagine Recognition')
 })
